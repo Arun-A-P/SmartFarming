@@ -106,8 +106,8 @@ public class CameraActivity extends AppCompatActivity implements CameraBridgeVie
         Imgproc.cvtColor(orig, orig, Imgproc.COLOR_RGBA2RGB);
         rgbImg = orig.clone();
         Imgproc.cvtColor(orig, orig, Imgproc.COLOR_BGR2HSV);
-        Core.inRange(orig, new Scalar(53, 150, 0), new Scalar(90, 255, 255), orig);
-
+        //Core.inRange(orig, new Scalar(53, 150, 0), new Scalar(90, 255, 255), orig);
+        Core.inRange(orig, new Scalar(64, 0, 60), new Scalar(98, 255, 180), orig);
       /*  Imgproc.erode(orig, orig, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(5, 5)));
         Imgproc.dilate(orig, orig, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(5, 5)));
        */ tempImg = orig.clone();
