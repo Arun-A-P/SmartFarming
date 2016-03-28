@@ -54,7 +54,7 @@ public class CameraActivity extends AppCompatActivity implements CameraBridgeVie
         }
     };
     private JavaCameraView cameraView;
-    public static Mat tempImg;
+    public static Mat tempImg, rgbImg;
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +103,8 @@ public class CameraActivity extends AppCompatActivity implements CameraBridgeVie
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat orig = inputFrame.rgba();
+        Imgproc.cvtColor(orig, orig, Imgproc.COLOR_RGBA2RGB);
+        rgbImg = orig.clone();
         Imgproc.cvtColor(orig, orig, Imgproc.COLOR_BGR2HSV);
         Core.inRange(orig, new Scalar(53, 150, 0), new Scalar(90, 255, 255), orig);
 

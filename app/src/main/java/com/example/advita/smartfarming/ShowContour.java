@@ -43,14 +43,20 @@ public class ShowContour extends AppCompatActivity {
                 Intent i = new Intent(view.getContext(), Histogram.class);
                 startActivity(i);
             }
-
-
-});
+        });
         modifyImage();
-        }
+        //test();
+    }
 
+protected void test(){
+    Mat img = CameraActivity.rgbImg.clone();
+    Bitmap bmp = Bitmap.createBitmap(img.cols(), img.rows(), Bitmap.Config.ARGB_8888);
+    Utils.matToBitmap(img, bmp);
+    ImageView imageView = (ImageView) findViewById(R.id.imageView);
+    imageView.setImageBitmap(bmp);
+}
 private void modifyImage() {
-    Mat img = CameraActivity.tempImg;
+    Mat img = CameraActivity.tempImg.clone();
     Core.transpose(img, img);
     Core.flip(img, img, 1);
 
