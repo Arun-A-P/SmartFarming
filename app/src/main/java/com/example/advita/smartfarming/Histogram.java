@@ -27,7 +27,6 @@ public class Histogram extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_histogram);
         Log.d("Error", "");
-
         Hist();
         //test();
     }
