@@ -3,6 +3,7 @@ package com.example.advita.smartfarming;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import org.opencv.video.BackgroundSubtractorMOG2;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
@@ -46,55 +48,137 @@ public class ShowContour extends AppCompatActivity {
             }
         });
         modifyImage();
-        //test();
+        //graphCut();
     }
 
-protected void test(){
-    Mat img = CameraActivity.rgbImg.clone();
-    Bitmap bmp = Bitmap.createBitmap(img.cols(), img.rows(), Bitmap.Config.ARGB_8888);
-    Utils.matToBitmap(img, bmp);
+protected void graphCut(){
+    Mat orig = CameraActivity.rgbImg.clone();
+    Mat hierarchy = new Mat();
+    List<MatOfPoint> contours = new ArrayList<>();
+    Core.transpose(orig, orig);
+    Core.flip(orig, orig, 1);
+    Imgproc.cvtColor(orig, orig, Imgproc.COLOR_RGBA2RGB);
+    Mat temp = orig.clone();
+    Mat detectEdges = new Mat();
+    Mat filter = new Mat(orig.width(), orig.height(), orig.type());
+    Imgproc.bilateralFilter(orig, filter, 31, 31, 31 / 2);
+    Imgproc.cvtColor(filter, filter, Imgproc.COLOR_BGR2GRAY);
+    Imgproc.Canny(filter, detectEdges, 20, 60);
+    Imgproc.threshold(detectEdges, detectEdges, 1, 255, Imgproc.THRESH_BINARY_INV);
+    Imgproc.morphologyEx(detectEdges, detectEdges, Imgproc.MORPH_CLOSE, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(2, 2)));
+    Imgproc.findContours(detectEdges, contours, hierarchy, Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_NONE);
+
+    double largestPerimeter = -1;
+    int pos = 0;
+    for( int i = 0; i< contours.size(); i++ ) // iterate through each contour.
+    {
+        MatOfPoint2f cont = new MatOfPoint2f(contours.get(i).toArray());
+        double perimeter = Imgproc.arcLength(cont, true);
+
+        if(perimeter > largestPerimeter)
+        {
+            largestPerimeter = perimeter;
+            pos = i;
+        }
+    }
+    MatOfInt hull = new MatOfInt();
+    Imgproc.convexHull(contours.get(pos), hull);
+
+    Point[] points = new Point[hull.rows()];
+
+    for(int j=0; j < hull.rows(); j++){
+        int index = (int)hull.get(j, 0)[0];
+        points[j] = new Point(contours.get(pos).get(index, 0)[0], contours.get(pos).get(index, 0)[1]);
+    }
+
+    List<MatOfPoint> hullmop = new ArrayList<MatOfPoint>();
+    MatOfPoint mop = new MatOfPoint();
+    mop.fromArray(points);
+    hullmop.add(mop);
+
+    Imgproc.drawContours(temp, contours, -1, new Scalar(255, 255, 0));
+    //Imgproc.drawContours(temp, hullmop, 0, new Scalar(255, 255, 0));
+
+    //Imgproc.grabCut(temp, temp, );
+    Bitmap bmp = Bitmap.createBitmap(temp.cols(), temp.rows(), Bitmap.Config.ARGB_8888);
+    Utils.matToBitmap(temp, bmp);
     ImageView imageView = (ImageView) findViewById(R.id.imageView);
     imageView.setImageBitmap(bmp);
 }
+
 private void modifyImage() {
-    Mat img = CameraActivity.tempImg.clone();
-    Core.transpose(img, img);
-    Core.flip(img, img, 1);
+    Mat orig = CameraActivity.rgbImg.clone();
+    Core.transpose(orig, orig);
+    Core.flip(orig, orig, 1);
+    Mat temp = orig.clone();
+    Imgproc.cvtColor(orig, orig, Imgproc.COLOR_RGBA2RGB);
+    Imgproc.cvtColor(orig, orig, Imgproc.COLOR_BGR2HSV);
+    Core.inRange(orig, new Scalar(64, 0, 60), new Scalar(98, 255, 180), orig);
 
-    Imgproc.dilate(img, img, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(5, 5)));
-    Imgproc.erode(img, img, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(5, 5)));
+    Imgproc.dilate(orig, orig, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(5, 5)));
+    Imgproc.erode(orig, orig, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(5, 5)));
 
-    Bitmap bmp = Bitmap.createBitmap(img.cols(), img.rows(), Bitmap.Config.ARGB_8888);
+    Bitmap bmp = Bitmap.createBitmap(orig.cols(), orig.rows(), Bitmap.Config.ARGB_8888);
     List<MatOfPoint> contours = new ArrayList<>();
     Mat hierarchy = new Mat();;
-    Imgproc.findContours(img, contours, hierarchy, Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_NONE);
-  //  int[] buff = new int[(int) (hierarchy.channels() * hierarchy.total())];
-  //  hierarchy.get(0, 0, buff);
-
+    Imgproc.findContours(orig, contours, hierarchy, Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_NONE);
     MatOfPoint2f approxCurve = new MatOfPoint2f();
-    for (int i=0; i<contours.size(); i++)
+    double  largest_area = -1;
+    int largest_contour_index = 0;
+    Rect bounding_rect = new Rect();
+
+    for( int i = 0; i< contours.size(); i++ ) // iterate through each contour.
     {
-        //Convert contours(i) from MatOfPoint to MatOfPoint2f
-        MatOfPoint2f contour2f = new MatOfPoint2f( contours.get(i).toArray() );
-        //Processing on mMOP2f1 which is in type MatOfPoint2f
-        double approxDistance = Imgproc.arcLength(contour2f, true)*0.02;
-        Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, true);
-
-        //Convert back to MatOfPoint
-        MatOfPoint points = new MatOfPoint( approxCurve.toArray() );
-
-        // Get bounding rect of contour
-        Rect rect = Imgproc.boundingRect(points);
-
-        // draw enclosing rectangle (all same color, but you could use variable i to make them unique)
-        Imgproc.rectangle(img, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0, 255), 3);
-
+        double a = Imgproc.contourArea(contours.get(i), false);  //  Find the area of contour
+        bounding_rect = Imgproc.boundingRect(contours.get(i));
+        //Imgproc.rectangle(temp, new Point(bounding_rect.x, bounding_rect.y), new Point(bounding_rect.x + bounding_rect.width, bounding_rect.y + bounding_rect.height), new Scalar(255, 0, 0, 255), 3);
+        if (a > largest_area) {
+            largest_area = a;
+            largest_contour_index = i;                //Store the index of largest contour
+            bounding_rect = Imgproc.boundingRect(contours.get(i)); // Find the bounding rectangle for biggest contour
+        }
     }
 
-    Utils.matToBitmap(img, bmp);
+   // Imgproc.rectangle(temp, new Point(bounding_rect.x, bounding_rect.y), new Point(bounding_rect.x + bounding_rect.width, bounding_rect.y + bounding_rect.height), new Scalar(255, 0, 0, 255), 3);
+
+    MatOfInt hull = new MatOfInt();
+    Imgproc.convexHull(contours.get(largest_contour_index), hull);
+
+    Point[] points = new Point[hull.rows()];
+
+    for(int j=0; j < hull.rows(); j++){
+        int index = (int)hull.get(j, 0)[0];
+        points[j] = new Point(contours.get(largest_contour_index).get(index, 0)[0], contours.get(largest_contour_index).get(index, 0)[1]);
+    }
+
+    List<MatOfPoint> hullmop = new ArrayList<MatOfPoint>();
+    MatOfPoint mop = new MatOfPoint();
+    mop.fromArray(points);
+    hullmop.add(mop);
+
+    if(!hullmop.isEmpty())
+        Imgproc.drawContours(temp, hullmop, -1, new Scalar(255, 0, 0));
+
+    bounding_rect = Imgproc.boundingRect(hullmop.get(0));
+    Mat fgdModel = new Mat();
+    fgdModel.setTo(new Scalar(255, 255, 255));
+    Mat bgdModel = new Mat();
+    bgdModel.setTo(new Scalar(255, 255, 255));
+    Imgproc.cvtColor(temp, temp, Imgproc.COLOR_RGBA2RGB);
+    Mat result = new Mat();
+    Mat finImg = new Mat();
+    Mat source = new Mat(1, 1, CvType.CV_8U, new Scalar(3.0));
+
+
+    Imgproc.grabCut(temp, result, bounding_rect, bgdModel, fgdModel, 1, 0);
+    Core.compare(result, source, result, Core.CMP_EQ);
+
+    Core.convertScaleAbs(result, result, 100, 0);
+    Imgproc.cvtColor(result, result, Imgproc.COLOR_GRAY2RGBA);
+    //Mat cropImg = orig(bounding_rect);
+    Utils.matToBitmap(result, bmp);
     ImageView imageView = (ImageView) findViewById(R.id.imageView);
     imageView.setImageBitmap(bmp);
 }
-
 
 }
