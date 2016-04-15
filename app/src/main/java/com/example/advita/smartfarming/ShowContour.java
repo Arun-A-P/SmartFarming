@@ -120,14 +120,15 @@ private void modifyImage() {
 
     Bitmap bmp = Bitmap.createBitmap(orig.cols(), orig.rows(), Bitmap.Config.ARGB_8888);
     List<MatOfPoint> contours = new ArrayList<>();
-    Mat hierarchy = new Mat();;
+    Mat hierarchy = new Mat();
+
     Imgproc.findContours(orig, contours, hierarchy, Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_NONE);
     MatOfPoint2f approxCurve = new MatOfPoint2f();
-    double  largest_area = -1;
+    double largest_area = -1;
     int largest_contour_index = 0;
     Rect bounding_rect = new Rect();
 
-    for( int i = 0; i< contours.size(); i++ ) // iterate through each contour.
+    for (int i = 0; i < contours.size(); i++) // iterate through each contour.
     {
         double a = Imgproc.contourArea(contours.get(i), false);  //  Find the area of contour
         bounding_rect = Imgproc.boundingRect(contours.get(i));
@@ -139,15 +140,15 @@ private void modifyImage() {
         }
     }
 
-   // Imgproc.rectangle(temp, new Point(bounding_rect.x, bounding_rect.y), new Point(bounding_rect.x + bounding_rect.width, bounding_rect.y + bounding_rect.height), new Scalar(255, 0, 0, 255), 3);
+    // Imgproc.rectangle(temp, new Point(bounding_rect.x, bounding_rect.y), new Point(bounding_rect.x + bounding_rect.width, bounding_rect.y + bounding_rect.height), new Scalar(255, 0, 0, 255), 3);
 
     MatOfInt hull = new MatOfInt();
     Imgproc.convexHull(contours.get(largest_contour_index), hull);
 
     Point[] points = new Point[hull.rows()];
 
-    for(int j=0; j < hull.rows(); j++){
-        int index = (int)hull.get(j, 0)[0];
+    for (int j = 0; j < hull.rows(); j++) {
+        int index = (int) hull.get(j, 0)[0];
         points[j] = new Point(contours.get(largest_contour_index).get(index, 0)[0], contours.get(largest_contour_index).get(index, 0)[1]);
     }
 
@@ -155,9 +156,6 @@ private void modifyImage() {
     MatOfPoint mop = new MatOfPoint();
     mop.fromArray(points);
     hullmop.add(mop);
-
-    if(!hullmop.isEmpty())
-        Imgproc.drawContours(temp, hullmop, -1, new Scalar(255, 0, 0));
 
     bounding_rect = Imgproc.boundingRect(hullmop.get(0));
     Mat fgdModel = new Mat();
@@ -171,14 +169,47 @@ private void modifyImage() {
 
 
     Imgproc.grabCut(temp, result, bounding_rect, bgdModel, fgdModel, 1, 0);
-    Core.compare(result, source, result, Core.CMP_EQ);
-
+    //Core.compare(result, source, result, Core.CMP_EQ);
+    Imgproc.cvtColor(temp, temp, Imgproc.COLOR_RGB2RGBA);
     Core.convertScaleAbs(result, result, 100, 0);
-    Imgproc.cvtColor(result, result, Imgproc.COLOR_GRAY2RGBA);
+    //Imgproc.cvtColor(result, result, Imgproc.COLOR_GRAY2RGB);
     //Mat cropImg = orig(bounding_rect);
-    Utils.matToBitmap(result, bmp);
+    //Core.inRange(result, new Scalar(0, 0, 100), new Scalar(180, 255, 255), result);
+    //Log.d("Mask", result.toString());
+    for (int x = 0; x < result.rows(); x++) {
+        for (int y = 0; y < result.cols(); y++) {
+            double[] check = result.get(x, y);
+            if(check[0] != 255){
+                double[] data = {0, 0, 0, 0};
+                temp.put(x, y, data);
+               // Log.d("Value", Double.toString(check[0]));
+            }
+        }
+    }
+    Utils.matToBitmap(temp, bmp);
     ImageView imageView = (ImageView) findViewById(R.id.imageView);
     imageView.setImageBitmap(bmp);
 }
+
+    private static void convertToOpencvValues(Mat mask) {
+        byte[] buffer = new byte[3];
+        for (int x = 0; x < mask.rows(); x++) {
+            for (int y = 0; y < mask.cols(); y++) {
+                mask.get(x, y, buffer);
+                int value = buffer[0];
+                if (value >= 0 && value < 64) {
+                    buffer[0] = Imgproc.GC_BGD; // for sure background
+                } else if (value >= 64 && value < 128) {
+                    buffer[0] = Imgproc.GC_PR_BGD; // probably background
+                } else if (value >= 128 && value < 192) {
+                    buffer[0] = Imgproc.GC_PR_FGD; // probably foreground
+                } else {
+                    buffer[0] = Imgproc.GC_FGD; // for sure foreground
+
+                }
+                mask.put(x, y, buffer);
+            }
+        }
+    }
 
 }
