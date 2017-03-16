@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:support-v13:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile project(':libraries:opencv')
+    compile files('jars/wekaSTRIPPED.jar')
 }

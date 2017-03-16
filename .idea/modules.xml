@@ -2,10 +2,21 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SmartFarming.iml" filepath="$PROJECT_DIR$/SmartFarming.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/libraries.iml" filepath="$PROJECT_DIR$/libraries/libraries.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/OpenCV/opencv.iml" filepath="$PROJECT_DIR$/libraries/OpenCV/opencv.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/22.2.1.iml" filepath="$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/22.2.1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/OpenCV/OpenCV.iml" filepath="$PROJECT_DIR$/libraries/OpenCV/OpenCV.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/OpenCV/build/generated/source/aidl/aidl.iml" filepath="$PROJECT_DIR$/libraries/OpenCV/build/generated/source/aidl/aidl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/build/generated/source/buildConfig/androidTest/androidTest.iml" filepath="$PROJECT_DIR$/app/build/generated/source/buildConfig/androidTest/androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/OpenCV/build/generated/source/buildConfig/androidTest/androidTest1.iml" filepath="$PROJECT_DIR$/libraries/OpenCV/build/generated/source/buildConfig/androidTest/androidTest1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/OpenCV/build/generated/source/r/androidTest/androidTest2.iml" filepath="$PROJECT_DIR$/libraries/OpenCV/build/generated/source/r/androidTest/androidTest2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/src/androidTest/androidTest3.iml" filepath="$PROJECT_DIR$/app/src/androidTest/androidTest3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/build/generated/source/buildConfig/buildConfig.iml" filepath="$PROJECT_DIR$/app/build/generated/source/buildConfig/buildConfig.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/OpenCV/build/generated/source/buildConfig/buildConfig1.iml" filepath="$PROJECT_DIR$/libraries/OpenCV/build/generated/source/buildConfig/buildConfig1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/build/intermediates/manifests/full/debug/debug.iml" filepath="$PROJECT_DIR$/app/build/intermediates/manifests/full/debug/debug.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/src/main/main.iml" filepath="$PROJECT_DIR$/app/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/OpenCV/build/generated/source/r/r.iml" filepath="$PROJECT_DIR$/libraries/OpenCV/build/generated/source/r/r.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/build/generated/source/r/r1.iml" filepath="$PROJECT_DIR$/app/build/generated/source/r/r1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/src/test/test.iml" filepath="$PROJECT_DIR$/app/src/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/SmartFarming.libraries/opencv/unspecified/unspecified.iml" filepath="$PROJECT_DIR$/app/build/intermediates/exploded-aar/SmartFarming.libraries/opencv/unspecified/unspecified.iml" />
     </modules>
   </component>
 </project>

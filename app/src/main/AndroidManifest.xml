@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.advita.smartfarming">
+    package="com.example.arun.smartfarming">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.arun.smartfarming.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,14 +24,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CameraActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.example.arun.smartfarming.CameraActivity"
+            android:parentActivityName="com.example.arun.smartfarming.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".ShowContour"
+            android:name="com.example.arun.smartfarming.ShowContour"
             android:label="@string/title_activity_show_contour"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Histogram"></activity>
+        <activity android:name="com.example.arun.smartfarming.Histogram" />
+        <activity
+            android:name="com.example.arun.smartfarming.ClassifierActivity"
+            android:label="@string/title_activity_classifier"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
