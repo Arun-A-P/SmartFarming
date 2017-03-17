@@ -13,7 +13,7 @@ The project involves the use of a mobile camera which provides an image feed to 
 
 Unlike frequently done, the image processing module manages foreground extraction in a real world situation, i.e. even if the background is not plain coloured. The machine learning module makes informed decisions to achieve classification and disease identification. This system increases the convenience of crop monitoring, improving efficiency of the whole process.
 
-<img src="https://github.com/Arun-A-P/SmartFarming/blob/master/images/DiseasedLeaf.png" height = "200" width="200"/> <img src="https://github.com/Arun-A-P/SmartFarming/blob/master/images/ExtractedLeaf.jpg" height = "200" width="300"/>
+<img src="https://github.com/Arun-A-P/SmartFarming/blob/master/images/DiseasedLeaf.png" height = "400" width="400"/> <img src="https://github.com/Arun-A-P/SmartFarming/blob/master/images/ExtractedLeaf.jpg" height = "400" width="400"/>
 
 The implemented project has identified ~85% of the 120 samples successfully (i.e. whether the image contains diseased or a healthy leaf). The sample contains a mix images that are positive and negative for Sigatoka.
 
