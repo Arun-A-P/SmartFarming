@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="debug">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/pre-dexed/debug/classes-e149b212d1cf742adca60308e759bc1eca17b214.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.1-8c1d01f5e9d1bd6705752a670739790c1b8e88e7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/pre-dexed/debug/classes-d1be0e93b207361da1e08694b699135f9434948e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/pre-dexed/debug/wekaSTRIPPED-0105fa66df7b1ac8b3adb25469c7f195002ecfba.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/pre-dexed/debug/classes-984b1c2ecb11349004c1c51b4beb8ad3d251c86c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/pre-dexed/debug/classes-d2f19f38524028ff35c9b86c34ea1927b888ff25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-347a41b235bc9960e2f9fa857f34595718a1cbfc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-7e8eb1afba60f351465e23295066cdd374d0e79b.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/pre-dexed/debug/classes-fc3fd54ed3f2c99d2cb2ae27346454d8ac9bf26f.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

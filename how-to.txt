@@ -1,0 +1,7 @@
+Project Setup:
+1. Setting up the Android Application:
+	a. Install Android Studio
+	b. Open ‘smartfarmingmain’ 
+	c. Run the project after connecting an Android device to the system
+2. Setting up of Remote Server:
+	a. Run start_server.bat in the folder 'Server' folder on a Windows system
