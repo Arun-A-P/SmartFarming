@@ -7,14 +7,13 @@ Bananas are a commercially important fruit produced in India. Plantations are va
 
 The aim of this project is to develop an Android mobile system that carries out early disease detection on banana trees in large plantations. Without the use of technology, the same process would require manual intervention, implying increased labour costs.
 
-![alt tag](https://github.com/Arun-A-P/SmartFarming/blob/master/images/HealthyRegions.tif "Diseased Regions")
+![alt tag](https://github.com/Arun-A-P/SmartFarming/blob/master/images/HealthyRegions.png "Diseased Regions")
 
 The project involves the use of a mobile camera which provides an image feed to a control unit. This control unit uses image processing algorithms (Object Detection, ConvexHull, GrabCut etc.) with the help of OpenCV to extract the leaf in examination. Once the leaf is extracted from the image, it is provided to the Random Forest classifier which is trained to identify if the leaf is diseased or not.
 
 Unlike frequently done, the image processing module manages foreground extraction in a real world situation, i.e. even if the background is not plain coloured. The machine learning module makes informed decisions to achieve classification and disease identification. This system increases the convenience of crop monitoring, improving efficiency of the whole process.
 
-![alt tag](https://github.com/Arun-A-P/SmartFarming/blob/master/images/DiseasedLeaf.png "Diseased Leaf")
-![alt tag](https://github.com/Arun-A-P/SmartFarming/blob/master/images/ExtractedLeaf.jpg "Extracted Leaf")
+<img src="https://github.com/Arun-A-P/SmartFarming/blob/master/images/DiseasedLeaf.png" height = "200" width="200"/> <img src="https://github.com/Arun-A-P/SmartFarming/blob/master/images/ExtractedLeaf.jpg" height = "200" width="300"/>
 
 The implemented project has identified ~85% of the 120 samples successfully (i.e. whether the image contains diseased or a healthy leaf). The sample contains a mix images that are positive and negative for Sigatoka.
 
